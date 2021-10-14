@@ -11,33 +11,19 @@ enum VAR_TYPE {
     VAR_STRING
 };
 
-class IDENT {
-    
-    std::string name;
-    int adress;
-    
-    public:
-        IDENT();
-        IDENT(std::string);
-        std::string get_name();
-        int get_adress();
-        void set_adress(int);
-
-};
-
 class Data {
 
-    IDENT identificator;
+    std::string identificator;
     std::string value;
     VAR_TYPE type;
 
     public:
         Data();
-        Data(IDENT, VAR_TYPE, std::string);
-        void set_ident(IDENT);
+        Data(std::string, VAR_TYPE, std::string);
+        void set_ident(std::string);
         void set_type(VAR_TYPE);
         void set_val(std::string); 
-        IDENT get_ident();
+        std::string get_ident();
         VAR_TYPE get_type();
         std::string get_val(); 
 

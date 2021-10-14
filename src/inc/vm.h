@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "data.h"
 
 enum INST_TYPE {
@@ -24,6 +25,7 @@ enum INST_TYPE {
     INST_INCR,
     INST_DECR,
     INST_SET_TYPE,
+    INST_GET_VAR,
     INST_DUMP_STACK,
     INST_DUMP_DATA_AREA
 };
@@ -48,6 +50,8 @@ enum EXIT_CODE {
     DIVISION_BY_ZERO,
     NOT_IMPLEMENTED,
     CHANGE_CONST_TYPE,
+    CHANGE_CONST_VAL,
+    VAR_NOT_DEFINEDED,
     TYPE_MISMATCH,
     ILLEGAL_INST
 };
@@ -55,8 +59,7 @@ enum EXIT_CODE {
 class VM {
     protected:
         std::vector<Data> Stack;
-        std::vector<Data> data_area;
-        std::vector<IDENT> Ident_table;
+        std::map<std::string, Data> data_area;
 
         EXIT_CODE exec_inst(Inst);
 

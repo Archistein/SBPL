@@ -1,9 +1,9 @@
 a int 8 =
 b int 15 =
 
-a b < if {
-a ++ 
+a$ b$ < if {
+a$ ++ 
 }
 
 "Hello, World" puts
-a puts
+a$ puts

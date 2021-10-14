@@ -1,40 +1,19 @@
 #include <string>
 #include "inc/data.h"
 
-IDENT::IDENT() {
-    this->name = "";
-    this->adress = -1;
-}
-
-IDENT::IDENT(std::string name) {
-    this->name = name;
-}
-
-void IDENT::set_adress(int adress) {
-    this->adress = adress;
-}
-
-std::string IDENT::get_name() {
-    return this->name;
-}
-
-int IDENT::get_adress() {
-    return this->adress;
-}
-
 Data::Data() {
-    this->identificator = IDENT();
+    this->identificator = "";
     this->type = VAR_UNDEFINED;
     this->value = "";
 }
 
-Data::Data(IDENT identificator, VAR_TYPE type, std::string value) {
+Data::Data(std::string identificator, VAR_TYPE type, std::string value) {
     this->identificator = identificator;
     this->type = type;
     this->value = value;
 }
 
-IDENT Data::get_ident() {
+std::string Data::get_ident() {
     return this->identificator;
 }
 
@@ -46,7 +25,7 @@ std::string Data::get_val() {
     return this->value;
 }
 
-void Data::set_ident(IDENT identificator) {
+void Data::set_ident(std::string identificator) {
     this->identificator = identificator;
 }
 
