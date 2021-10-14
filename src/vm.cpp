@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include "inc/vm.h"
 #include "inc/data.h"
 
@@ -20,10 +21,7 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
 
         case INST_PUSH:
             this->Stack.push_back(instruction.get_operand());
-            if (!instruction.get_operand().get_ident().get_name().empty()) {
-                instruction.get_operand().get_ident().set_adress(Ident_table.size());
-                this->Ident_table.push_back(instruction.get_operand().get_ident().get_name());
-            }
+
             return OK;
 
         case INST_POP:
@@ -68,14 +66,14 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             if (this->Stack.size() < 2)
                 return STACK_UNDERFLOW;
 
-            if (this->Stack[this->Stack.size()-2].get_ident().get_name().empty())
+            if (this->Stack[this->Stack.size()-2].get_ident().empty())
                 return CHANGE_CONST_TYPE;
             
             if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
                 return TYPE_MISMATCH;
 
             this->Stack[this->Stack.size()-2].set_val(this->Stack[Stack.size()-1].get_val());
-            this->data_area.push_back(this->Stack[this->Stack.size()-2]);
+            this->data_area[this->Stack[this->Stack.size()-2].get_ident()] = this->Stack[this->Stack.size()-2];
 
             this->exec_inst(Inst(INST_POP, Data()));
             this->exec_inst(Inst(INST_POP, Data()));
@@ -101,7 +99,7 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             if (this->Stack.size() < 1)
                 return STACK_UNDERFLOW;
             
-            if (this->Stack[this->Stack.size()-1].get_ident().get_name().empty())
+            if (this->Stack[this->Stack.size()-1].get_ident().empty())
                 return CHANGE_CONST_TYPE;
 
             VAR_TYPE temp;
@@ -123,12 +121,27 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             this->Stack[this->Stack.size()-1].set_type(temp);
 
             return OK;
+        
+        case INST_GET_VAR:
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+
+            if (this->Stack[this->Stack.size()-1].get_ident().empty())
+                return CHANGE_CONST_VAL;
+
+            if (this->data_area.find(this->Stack[this->Stack.size()-1].get_ident()) == this->data_area.end())
+                return VAR_NOT_DEFINEDED;
+            
+            this->exec_inst(Inst(INST_POP, Data()));
+            this->exec_inst(Inst(INST_PUSH, this->data_area.find(this->Stack[this->Stack.size()].get_ident())->second));
+
+            return NOT_IMPLEMENTED;
 
         case INST_DUMP_STACK:
             std::cout << "Stack:" << std::endl;
             if (this->Stack.size())
-                for(Data d : Stack)
-                    std::cout   << "{IDENT:" << d.get_ident().get_name() 
+                for (Data d : Stack)
+                    std::cout   << "{IDENT:" << d.get_ident() 
                                 << " TYPE:" << d.get_type() 
                                 << " VALUE:" << d.get_val() 
                                 << "}" 
@@ -141,10 +154,10 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
         case INST_DUMP_DATA_AREA:
             std::cout << "Data area:" << std::endl;
             if (this->data_area.size())
-                for(Data d : data_area)
-                    std::cout   << "{IDENT:" << d.get_ident().get_name() 
-                                << " TYPE:" << d.get_type() 
-                                << " VALUE:" << d.get_val() 
+                for (auto it = data_area.begin(); it != data_area.end(); it++)
+                    std::cout   << "{IDENT:" << it->first 
+                                << " TYPE:" << it->second.get_type() 
+                                << " VALUE:" << it->second.get_val() 
                                 << "}" 
                                 << std::endl; 
             else
