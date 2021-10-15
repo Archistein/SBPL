@@ -1,0 +1,11 @@
+a int 0 =
+b int 1 =
+
+"Fibonacci nums:\n" puts
+
+i int 0 =
+while i$ 15 < {
+    b$ a$ b$ + =
+    a$ puts b$ a$ - = 
+    i$ ++
+}

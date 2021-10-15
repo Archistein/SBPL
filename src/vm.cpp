@@ -97,19 +97,184 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             return NOT_IMPLEMENTED;
 
         case INST_EQ:
-            return NOT_IMPLEMENTED;
+        {
+            if (this->Stack.size() < 2)
+                return STACK_UNDERFLOW;
+
+            if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
+                return TYPE_MISMATCH;
+
+            std::string left_operand = this->Stack[this->Stack.size()-2].get_val(),
+                        right_operand = this->Stack[this->Stack.size()-1].get_val();
+
+            bool flag = false;
+
+            switch (this->Stack[this->Stack.size()-2].get_type()) {
+                case VAR_INT:
+                    if (std::stoi(left_operand) == std::stoi(right_operand))
+                        flag = true;
+                    break;
+                case VAR_DOUBLE:
+                    if (std::stod(left_operand) == std::stod(right_operand))
+                        flag = true;
+                    break;
+                default:
+                    if (left_operand == right_operand)
+                        flag = true;
+                    break;
+            }  
+
+            if (flag)
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "1")));
+            else
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "0"))); 
+
+            return OK;
+        }
 
         case INST_GT:
-            return NOT_IMPLEMENTED;
+        {
+            if (this->Stack.size() < 2)
+                return STACK_UNDERFLOW;
+
+            if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
+                return TYPE_MISMATCH;
+            
+            std::string left_operand = this->Stack[this->Stack.size()-2].get_val(),
+                        right_operand = this->Stack[this->Stack.size()-1].get_val();
+
+            bool flag = false;
+
+            switch (this->Stack[this->Stack.size()-2].get_type()) {
+                case VAR_INT:
+                    if (std::stoi(left_operand) > std::stoi(right_operand))
+                        flag = true;
+                    break;
+                case VAR_DOUBLE:
+                    if (std::stod(left_operand) > std::stod(right_operand))
+                        flag = true;
+                    break;
+                default:
+                    if (left_operand > right_operand)
+                        flag = true;
+                    break;
+            }  
+
+            if (flag)
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "1")));
+            else
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "0")));
+
+            return OK;
+        }
 
         case INST_LS:
-            return NOT_IMPLEMENTED;
+        {
+            if (this->Stack.size() < 2)
+                return STACK_UNDERFLOW;
+
+            if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
+                return TYPE_MISMATCH;
+
+            std::string left_operand = this->Stack[this->Stack.size()-2].get_val(),
+                        right_operand = this->Stack[this->Stack.size()-1].get_val();
+
+            bool flag = false;
+
+            switch (this->Stack[this->Stack.size()-2].get_type()) {
+                case VAR_INT:
+                    if (std::stoi(left_operand) < std::stoi(right_operand))
+                        flag = true;
+                    break;
+                case VAR_DOUBLE:
+                    if (std::stod(left_operand) < std::stod(right_operand))
+                        flag = true;
+                    break;
+                default:
+                    if (left_operand < right_operand)
+                        flag = true;
+                    break;
+            }  
+
+            if (flag)
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "1")));
+            else
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "0"))); 
+
+            return OK;
+        }
 
         case INST_LE:
-            return NOT_IMPLEMENTED;
+        {
+            if (this->Stack.size() < 2)
+                return STACK_UNDERFLOW;
+            
+            if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
+                return TYPE_MISMATCH;
+
+            std::string left_operand = this->Stack[this->Stack.size()-2].get_val(),
+                        right_operand = this->Stack[this->Stack.size()-1].get_val();
+
+            bool flag = false;
+
+            switch (this->Stack[this->Stack.size()-2].get_type()) {
+                case VAR_INT:
+                    if (std::stoi(left_operand) <= std::stoi(right_operand))
+                        flag = true;
+                    break;
+                case VAR_DOUBLE:
+                    if (std::stod(left_operand) <= std::stod(right_operand))
+                        flag = true;
+                    break;
+                default:
+                    if (left_operand <= right_operand)
+                        flag = true;
+                    break;
+            }  
+
+            if (flag)
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "1")));
+            else
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "0")));
+
+            return OK;
+        }
 
         case INST_GE:
-            return NOT_IMPLEMENTED;
+        {
+            if (this->Stack.size() < 2)
+                return STACK_UNDERFLOW;
+
+            if (this->Stack[this->Stack.size()-2].get_type() != this->Stack[this->Stack.size()-1].get_type())
+                return TYPE_MISMATCH;
+
+            std::string left_operand = this->Stack[this->Stack.size()-2].get_val(),
+                        right_operand = this->Stack[this->Stack.size()-1].get_val();
+
+            bool flag = false;
+
+            switch (this->Stack[this->Stack.size()-2].get_type()) {
+                case VAR_INT:
+                    if (std::stoi(left_operand) >= std::stoi(right_operand))
+                        flag = true;
+                    break;
+                case VAR_DOUBLE:
+                    if (std::stod(left_operand) >= std::stod(right_operand))
+                        flag = true;
+                    break;
+                default:
+                    if (left_operand >= right_operand)
+                        flag = true;
+                    break;
+            }  
+
+            if (flag)
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "1")));
+            else
+                this->exec_inst(Inst(INST_PUSH, Data("", VAR_INT, "0"))); 
+
+            return OK;
+        }
 
         case INST_ASSIGN:
             if (this->Stack.size() < 2)
@@ -129,10 +294,47 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
 
             return OK;
         
-        case INST_JMP:
+        case INST_SET_LABEL:
             return NOT_IMPLEMENTED;
 
+        case INST_JMP:
+        {
+            int adress = std::stoi(instruction.get_operand().get_val());
+            if (adress < 0 || adress > this->program.size() - 1)
+                return SEGMENTATION_FAULT;
+
+            this->inst_pointer = adress;
+            
+            return OK;
+        }
+
+        case INST_JME:
+        {   
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+
+            int adress = std::stoi(instruction.get_operand().get_val());
+            if (adress < 0 || adress > this->program.size() - 1)
+                return SEGMENTATION_FAULT;
+
+            this->inst_pointer = adress;
+            
+            return OK;
+        }
+
         case INST_IF:
+            return NOT_IMPLEMENTED;
+
+        case INST_ELSE:
+            return NOT_IMPLEMENTED;
+
+        case INST_WHILE:
+            return NOT_IMPLEMENTED;
+
+        case INST_BEGIN:
+            return NOT_IMPLEMENTED;
+        
+        case INST_END:
             return NOT_IMPLEMENTED;
 
         case INST_PUTS:
@@ -218,9 +420,19 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
     return ILLEGAL_INST;
 }
 
-VM::VM(std::vector<Inst> program) {
-    for(Inst curr_inst : program) {
-        EHandler(this->exec_inst(curr_inst), curr_inst);
+VM::VM(std::vector<Inst> program) : inst_pointer(0) {
+    this->program = program;
+}
+
+void VM::eval() {
+
+    while (inst_pointer < this->program.size()) {
+        if (program[inst_pointer].get_type() == INST_IF || program[inst_pointer].get_type() == INST_ELSE || program[inst_pointer].get_type() == INST_WHILE || program[inst_pointer].get_type() == INST_BEGIN || program[inst_pointer].get_type() == INST_END)
+            program[inst_pointer].get_operand().set_val(std::to_string(inst_pointer));
+
+        EHandler(this->exec_inst(program[inst_pointer]), program[inst_pointer]);
+        inst_pointer++;
     }
+
     std::cout << "\nDEBUG INFO: program has terminated" << std::endl;
 }

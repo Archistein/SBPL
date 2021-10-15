@@ -1,9 +1,12 @@
 a int 8 =
 b int 15 =
 
-a$ b$ < if {
-a$ ++ 
+if a$ b$ < {
+    a$ ++ 
+} else {
+    b$ ++
 }
 
 "Hello, World" puts
 a$ puts
+b$ puts

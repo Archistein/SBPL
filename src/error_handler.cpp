@@ -24,13 +24,16 @@ EHandler::EHandler(EXIT_CODE code, Inst instruction) {
             std::cerr << "ERROR: Trying to change the value of a constant" << std::endl;
             break;
         case VAR_NOT_DEFINEDED:
-            std::cerr << "ERROR: Var {var} not definded" << std::endl;
+            std::cerr << "ERROR: Var not definded" << std::endl;
             break;
         case TYPE_MISMATCH:
-            std::cerr << "ERROR: Type {a} is not the same as type {b}" << std::endl;
+            std::cerr << "ERROR: Type mismatch" << std::endl;
+            break;
+        case SEGMENTATION_FAULT:
+            std::cerr << "ERROR: Segmentation fault" << std::endl;
             break;
         case ILLEGAL_INST:
-            std::cerr << "ERROR: Illegal instruction {inst}" << std::endl;
+            std::cerr << "ERROR: Illegal instruction " << Inst::inst_type_as_str(instruction.get_type()) << std::endl;
             break;
     }
     exit(code);

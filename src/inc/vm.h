@@ -19,8 +19,14 @@ enum INST_TYPE {
     INST_LE,
     INST_GE,
     INST_ASSIGN,
+    INST_SET_LABEL,
     INST_JMP,
+    INST_JME,
     INST_IF,
+    INST_ELSE,
+    INST_WHILE,
+    INST_BEGIN,
+    INST_END,
     INST_PUTS,
     INST_INCR,
     INST_DECR,
@@ -53,6 +59,7 @@ enum EXIT_CODE {
     CHANGE_CONST_VAL,
     VAR_NOT_DEFINEDED,
     TYPE_MISMATCH,
+    SEGMENTATION_FAULT,
     ILLEGAL_INST
 };
 
@@ -64,6 +71,9 @@ class VM {
     protected:
         std::vector<Data> Stack;
         std::map<std::string, Data> data_area;
+        
+        std::vector<Inst> program;
+        int inst_pointer;
 
         EXIT_CODE exec_inst(Inst);
 
