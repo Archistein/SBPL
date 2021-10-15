@@ -39,7 +39,7 @@ class Inst {
         Inst(INST_TYPE, Data);
         INST_TYPE get_type();
         Data get_operand();
-        //static std::string inst_type_as_str(INST_TYPE); TODO: implement
+        static std::string inst_type_as_str(INST_TYPE);
 
 };
 
@@ -54,6 +54,10 @@ enum EXIT_CODE {
     VAR_NOT_DEFINEDED,
     TYPE_MISMATCH,
     ILLEGAL_INST
+};
+
+struct EHandler {
+    EHandler(EXIT_CODE, Inst);
 };
 
 class VM {

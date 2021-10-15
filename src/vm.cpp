@@ -16,6 +16,55 @@ Data Inst::get_operand() {
     return this->operand;
 }
 
+std::string Inst::inst_type_as_str(INST_TYPE instruction) {
+    switch(instruction) {
+        case INST_PUSH:
+            return "INST_PUSH";
+        case INST_POP:
+            return "INST_POP";
+        case INST_PLUS:
+            return "INST_PLUS";
+        case INST_MINUS:
+            return "INST_MINUS";
+        case INST_MUL:
+            return "INST_MUL";
+        case INST_DIV:
+            return "INST_DIV";
+        case INST_EQ:
+            return "INST_EQ";
+        case INST_GT:
+            return "INST_GT";
+        case INST_LS:
+            return "INST_LS";
+        case INST_LE:
+            return "INST_LE";
+        case INST_GE:
+            return "INST_GE";
+        case INST_ASSIGN:
+            return "INST_ASSIGN";
+        case INST_JMP:
+            return "INST_JMP";
+        case INST_IF:
+            return "INST_IF";
+        case INST_PUTS:
+            return "INST_PUTS";
+        case INST_INCR:
+            return "INST_INCR";
+        case INST_DECR:
+            return "INST_DECR";
+        case INST_SET_TYPE:
+            return "INST_SET_TYPE";
+        case INST_GET_VAR:
+            return "INST_GET_VAR";
+        case INST_DUMP_STACK:
+            return "INST_DUMP_STACK";
+        case INST_DUMP_DATA_AREA:
+            return "INST_DUMP_DATA_AREA";
+        default:
+            return "UNRECOGNIZED_INST";
+    }
+}
+
 EXIT_CODE VM::exec_inst(Inst instruction) {
     switch(instruction.get_type()) {
 
@@ -135,7 +184,7 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             this->exec_inst(Inst(INST_POP, Data()));
             this->exec_inst(Inst(INST_PUSH, this->data_area.find(this->Stack[this->Stack.size()].get_ident())->second));
 
-            return NOT_IMPLEMENTED;
+            return OK;
 
         case INST_DUMP_STACK:
             std::cout << "Stack:" << std::endl;
@@ -171,7 +220,7 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
 
 VM::VM(std::vector<Inst> program) {
     for(Inst curr_inst : program) {
-        this->exec_inst(curr_inst);
+        EHandler(this->exec_inst(curr_inst), curr_inst);
     }
     std::cout << "\nDEBUG INFO: program has terminated" << std::endl;
 }
