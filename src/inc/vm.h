@@ -8,7 +8,8 @@
 
 enum INST_TYPE {
     INST_PUSH,
-    INST_POP,   
+    INST_POP,
+    INST_DUP, 
     INST_PLUS,
     INST_MINUS,
     INST_MUL,
@@ -32,6 +33,7 @@ enum INST_TYPE {
     INST_DECR,
     INST_SET_TYPE,
     INST_GET_VAR,
+    INST_EXIT,
     INST_DUMP_STACK,
     INST_DUMP_DATA_AREA
 };
@@ -42,6 +44,7 @@ class Inst {
     Data operand;
     
     public:
+        Inst(INST_TYPE);
         Inst(INST_TYPE, Data);
         INST_TYPE get_type();
         Data get_operand();
@@ -59,7 +62,10 @@ enum EXIT_CODE {
     CHANGE_CONST_VAL,
     VAR_NOT_DEFINEDED,
     TYPE_MISMATCH,
+    LABEL_EXISTS,
     SEGMENTATION_FAULT,
+    COMPOUND_OP_NOT_CLOSED,
+    OP_NOT_DEF_FOR_THIS_TYPE,
     ILLEGAL_INST
 };
 
@@ -69,11 +75,16 @@ struct EHandler {
 
 class VM {
     protected:
+        bool state = true;
+
         std::vector<Data> Stack;
         std::map<std::string, Data> data_area;
+        std::map<std::string, int> labels;
         
         std::vector<Inst> program;
         int inst_pointer;
+
+        void set_labels_as_pointers();
 
         EXIT_CODE exec_inst(Inst);
 

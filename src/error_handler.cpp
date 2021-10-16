@@ -29,8 +29,17 @@ EHandler::EHandler(EXIT_CODE code, Inst instruction) {
         case TYPE_MISMATCH:
             std::cerr << "ERROR: Type mismatch" << std::endl;
             break;
+        case LABEL_EXISTS:
+            std::cerr << "ERROR: Label " << instruction.get_operand().get_val() << " already exists" << std::endl;
+            break;
         case SEGMENTATION_FAULT:
             std::cerr << "ERROR: Segmentation fault" << std::endl;
+            break;
+        case COMPOUND_OP_NOT_CLOSED:
+            std::cerr << "ERROR: Compound operator '{' not closed" << std::endl;
+            break;
+        case OP_NOT_DEF_FOR_THIS_TYPE:
+            std::cerr << "ERROR: Inst " << Inst::inst_type_as_str(instruction.get_type()) << " not definded for this type" << std::endl;
             break;
         case ILLEGAL_INST:
             std::cerr << "ERROR: Illegal instruction " << Inst::inst_type_as_str(instruction.get_type()) << std::endl;
