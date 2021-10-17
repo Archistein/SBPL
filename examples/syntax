@@ -1,5 +1,10 @@
-a int 8 =
-b int 15 =
+// Single line comment
+
+#define EIGHT 8 // comment
+#define FIFTEEN 15
+
+a int EIGHT =
+b int FIFTEEN =
 
 if a$ b$ < {
     a$ ++ 

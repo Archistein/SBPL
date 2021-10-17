@@ -65,6 +65,8 @@ std::string Inst::inst_type_as_str(INST_TYPE instruction) {
             return "INST_BEGIN";
         case INST_END:
             return "INST_END";
+        case INST_PRINT:
+            return "INST_PRINT";
         case INST_PUTS:
             return "INST_PUTS";
         case INST_INCR:
@@ -516,11 +518,19 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             
             return OK;
 
-        case INST_PUTS:
+        case INST_PRINT:
             if (this->Stack.size() < 1)
                 return STACK_UNDERFLOW;
 
             std::cout << this->Stack[this->Stack.size()-1].get_val();
+            
+            return OK;
+
+        case INST_PUTS:
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+
+            std::cout << this->Stack[this->Stack.size()-1].get_val() << std::endl;
             
             return OK;
 
@@ -574,13 +584,10 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             VAR_TYPE temp;
 
             if (instruction.get_operand().get_val() == "int")
-                /* TODO: implement isInt() */
                 temp = VAR_INT;
             else if (instruction.get_operand().get_val() == "double")
-                /* TODO: implement isDouble() */
                 temp = VAR_DOUBLE;
             else if (instruction.get_operand().get_val() == "char")
-                /* TODO: implement isChar() */
                 temp = VAR_CHAR;
             else if (instruction.get_operand().get_val() == "string")
                 temp = VAR_STRING;

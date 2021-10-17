@@ -28,6 +28,7 @@ enum INST_TYPE {
     INST_WHILE,
     INST_BEGIN,
     INST_END,
+    INST_PRINT,
     INST_PUTS,
     INST_INCR,
     INST_DECR,
