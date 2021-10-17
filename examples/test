@@ -1,0 +1,19 @@
+a int 0 =
+b int 1 =
+
+if a$ b$ < {
+    if a$ 0 > {
+        if a$ 0 > {
+            if a$ 0 > {
+                b$ ++
+            }
+        }
+    }
+} else {
+    b$ ++
+    if a$ 0 > {
+        a$ --
+    } else {
+        a$ ++
+    }
+}

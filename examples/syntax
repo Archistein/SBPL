@@ -10,6 +10,6 @@ if a$ b$ < {
     b$ ++
 }
 
-"Hello, World" 's' puts
+"Hello, World" puts
 a$ puts
 b$ puts

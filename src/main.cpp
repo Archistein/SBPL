@@ -2,6 +2,7 @@
 #include <vector>
 #include "inc/preprocessor.h"
 #include "inc/lexer.h"
+#include "inc/parser.h"
 #include "inc/vm.h"
 #include "inc/data.h"
 
@@ -160,9 +161,11 @@ int main(int argc, char **argv) {
             std::string source_code = preprocessor.preprocess();
 
             Tokenizer tokenizer(source_code);
-            tokenizer.tokenize();
+            
+            Parser parser(tokenizer.tokenize());
 
-            exit(NOT_IMPLEMENTED);
+            VM Virtual_Machine(parser.parse());
+            Virtual_Machine.eval();
 
         } else if (argv[1][1] == 'v') {
 

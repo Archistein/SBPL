@@ -154,9 +154,5 @@ std::vector<Token> Tokenizer::tokenize() {
         exit(-5);
     }
 
-    for (Token t : result) {
-        std::cout << "TOKEN_TYPE: " << t.get_type() << " VALUE: (" << t.get_value() << ")" << std::endl;
-    }
-    
     return result;
 }

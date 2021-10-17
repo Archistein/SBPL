@@ -28,14 +28,18 @@ std::string Preproc::preprocess() {
     std::string const_value;
 
     int pointer;
+    bool quotes;
 
     while(std::getline(file, buffer)) {
         const_name = "";
         const_value = "";
 
         pointer = -1;
+        quotes = false;
         
         for (int i = 0;i < buffer.length();i++) {
+            if (buffer[i] == '\"' || buffer[i] == '\'')
+                quotes = !quotes;
             if (buffer[i] == '#') {
                 if (buffer.substr(1,6) != "define") {
                     std::cerr << "ERROR: Unrecognized preprocessor directive" << std::endl;
@@ -64,7 +68,7 @@ std::string Preproc::preprocess() {
                 pointer = i;
                 break;
             } 
-            else if (buffer[i] == '/' && buffer[i+1] == '/') {
+            else if (buffer[i] == '/' && buffer[i+1] == '/' && !quotes) {
                 pointer = i;
                 break;
             }
