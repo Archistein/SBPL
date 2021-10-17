@@ -1,10 +1,16 @@
-all: main preproc data vm error_handler build
+all: main helper preproc lexer data vm error_handler build
 
 main: src/main.cpp
 	g++ -c src/main.cpp -o obj/main.o
 
+helper: src/helper.cpp
+	g++ -c src/helper.cpp -o obj/helper.o
+
 preproc: src/preprocessor.cpp
 	g++ -c src/preprocessor.cpp -o obj/preprocessor.o
+
+lexer: src/lexer.cpp
+	g++ -c src/lexer.cpp -o obj/lexer.o
 
 data: src/data.cpp
 	g++ -c src/data.cpp -o obj/data.o
@@ -15,8 +21,8 @@ vm: src/vm.cpp
 error_handler: src/error_handler.cpp
 	g++ -c src/error_handler.cpp -o obj/error_handler.o
 
-build: obj/main.o obj/data.o obj/vm.o obj/error_handler.o obj/preprocessor.o
-	g++ obj/main.o obj/data.o obj/vm.o obj/error_handler.o obj/preprocessor.o -o build/vm.out
+build: obj/*.o
+	g++ obj/*.o -o build/vm.out
 
 run:
 	./build/vm.out

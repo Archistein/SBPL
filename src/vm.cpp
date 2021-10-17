@@ -132,6 +132,10 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
 
             return OK;
 
+        /*
+            TODO: overload plus and mul instructions for strings
+        */
+
         case INST_PLUS:
             if (this->Stack.size() < 2)
                 return STACK_UNDERFLOW;

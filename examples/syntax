@@ -1,17 +1,15 @@
-// Single line comment
-
-#define EIGHT 8 // comment
+#define EIGHT 8
 #define FIFTEEN 15
 
-a int EIGHT =
+a int EIGHT = // Some comment
 b int FIFTEEN =
 
 if a$ b$ < {
-    a$ ++ 
+    a$ ++
 } else {
     b$ ++
 }
 
-"Hello, World" puts
+"Hello, World" 's' puts
 a$ puts
 b$ puts

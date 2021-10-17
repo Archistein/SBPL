@@ -1,10 +1,12 @@
+#define NUM 15
+
 a int 0 =
 b int 1 =
 
 "Fibonacci nums:\n" puts
 
 i int 0 =
-while i$ 15 < {
+while i$ NUM < {
     b$ a$ b$ + =
     a$ puts b$ a$ - = 
     i$ ++

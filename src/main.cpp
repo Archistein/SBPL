@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "inc/preprocessor.h"
+#include "inc/lexer.h"
 #include "inc/vm.h"
 #include "inc/data.h"
 
@@ -10,7 +11,7 @@ void usage(char **argv) {
     std::cout << "Subcommands:" << std::endl;
     std::cout << "      -c to compile the program" << std::endl;
     std::cout << "      -v to execute the program" << std::endl;
-    std::cout << "      -E to interrupt compilation after preprocessing" << std::endl;
+    std::cout << "      -E to interrupt compilation after preprocessing (output is required)" << std::endl;
 }
 
 int main(int argc, char **argv) {
@@ -153,23 +154,43 @@ int main(int argc, char **argv) {
     
     if (argv[1][0] == '-') {
         if (argv[1][1] == 'c') {
-            std::cerr << "Compilation not implemented" << std::endl;
+            
+            Preproc preprocessor(argv[2]);
+
+            std::string source_code = preprocessor.preprocess();
+
+            Tokenizer tokenizer(source_code);
+            tokenizer.tokenize();
+
             exit(NOT_IMPLEMENTED);
+
         } else if (argv[1][1] == 'v') {
+
             std::cerr << "Execution not implemented" << std::endl;
             exit(NOT_IMPLEMENTED);
+
         } else if (argv[1][1] == 'E') {
-            Preproc preprocessor(argv[2]);
-            
+
+            if (argc < 4)  {
+                std::cerr << "ERROR: Too few arguments" << std::endl;
+                usage(argv);
+                exit(-1);
+            }   
+                
+            Preproc preprocessor(argv[2], argv[3]);
+                
             if (preprocessor.preprocess().empty()) {
                 std::cerr << "ERROR: " << argv[2] << " doesn't exists" << std::endl;
             }
-            exit(NOT_IMPLEMENTED);
+
         } else {
+
             std::cerr << "ERROR: Unrecognized subcommand" << std::endl;
             usage(argv);
             exit(-2);
+
         }
+
     }
 
     //VM Virtual_Machine(fib);

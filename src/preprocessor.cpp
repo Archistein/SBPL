@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <regex>
 #include <fstream>
 #include "inc/preprocessor.h"
 
@@ -16,6 +17,7 @@ Preproc::Preproc(std::string input, std::string output) {
 std::string Preproc::preprocess() {
     std::map<std::string, std::string> constans;
     std::string buffer;
+    std::string result;
 
     std::ifstream file(input_file);
 
@@ -25,11 +27,13 @@ std::string Preproc::preprocess() {
     std::string const_name;
     std::string const_value;
 
+    int pointer;
+
     while(std::getline(file, buffer)) {
         const_name = "";
         const_value = "";
 
-        int pointer = -1;
+        pointer = -1;
         
         for (int i = 0;i < buffer.length();i++) {
             if (buffer[i] == '#') {
@@ -38,18 +42,18 @@ std::string Preproc::preprocess() {
                     exit(-4);
                 }
 
-                int flag = 0;
+                int spaces = 0;
                 for (char c : buffer.substr(8, -1)) {
                     if (c == ' ') {
-                        flag += 1;
+                        spaces += 1;
                         
-                        if (flag > 1)
+                        if (spaces > 1)
                             break;
 
                         continue;
                     }
-                    
-                    if (flag == 0)
+
+                    if (spaces == 0)
                         const_name += c;
                     else
                         const_value += c;
@@ -59,25 +63,34 @@ std::string Preproc::preprocess() {
 
                 pointer = i;
                 break;
-            }
-            else if (buffer[i] == '/') {
+            } 
+            else if (buffer[i] == '/' && buffer[i+1] == '/') {
                 pointer = i;
                 break;
             }
         }
 
-        if (pointer >= 0)
-            std::cout << buffer.substr(0, pointer) << std::endl;
+        if (pointer > 0)
+            buffer = ( !buffer.empty() && buffer != "\n" ? buffer.substr(0, pointer) + '\n' : "" );
+        else if (pointer == 0)
+            buffer = "";
         else
-            std::cout << buffer << std::endl;
+            buffer = buffer + '\n';
+
+        for (auto it = constans.begin();it != constans.end();it++) {
+            buffer = std::regex_replace(buffer, std::regex(it->first), it->second);
+        }
+        
+        result += buffer;
     }
 
     file.close();
     
-    for (auto it = constans.begin(); it != constans.end(); it++)
-                    std::cout   << "Name: " << it->first 
-                                << " Value: " << it->second
-                                << std::endl; 
+    if (!this->output_file.empty()) {
+        std::ofstream out(this->output_file);
+        out << result;
+        out.close();
+    }
 
-    return "NOT_IMPLEMENTED";
+    return result;
 }
