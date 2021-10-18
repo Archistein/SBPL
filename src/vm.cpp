@@ -55,6 +55,8 @@ std::string Inst::inst_type_as_str(INST_TYPE instruction) {
             return "INST_JMP";
         case INST_JME:
             return "INST_JME";
+        case INST_GOTO:
+            return "INST_GOTO";
         case INST_IF:
             return "INST_IF";
         case INST_ELSE:
@@ -97,6 +99,7 @@ void VM::set_labels_as_pointers() {
             case INST_WHILE:
             case INST_BEGIN:
             case INST_END:
+            case INST_SET_LABEL:
                 this->labels[program[inst_pointer].get_operand().get_val()] = inst_pointer;
                 break;
             default:
@@ -470,6 +473,17 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             return OK;
         }
 
+        case INST_GOTO:
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+            
+            if (this->labels.find(this->Stack[this->Stack.size()-1].get_ident()) == this->labels.end())
+                return LABEL_DOESNT_EXISTS;
+            
+            this->exec_inst(Inst(INST_JMP, Data("", VAR_UNDEFINED, std::to_string(this->labels.find(this->Stack[this->Stack.size()-1].get_ident())->second))));
+
+            return OK;
+
         case INST_IF:
             this->exec_inst(Inst(INST_SET_LABEL, instruction.get_operand()));
             return OK;
@@ -662,11 +676,16 @@ void VM::eval() {
     this->set_labels_as_pointers();
 
     while (inst_pointer < this->program.size() || this->state == true) {
-        EHandler(this->exec_inst(program[inst_pointer]), program[inst_pointer]);
+        if (this->program[inst_pointer].get_type() == INST_SET_LABEL) {
+            inst_pointer++;
+            continue;
+        }
+
+        EHandler(this->exec_inst(this->program[inst_pointer]), this->program[inst_pointer]);
 
         if (DEBUG) {
             std::cout << std::endl;
-            std::cout << "Instruction: " << Inst::inst_type_as_str(program[inst_pointer].get_type()) << std::endl;
+            std::cout << "Instruction: " << Inst::inst_type_as_str(this->program[inst_pointer].get_type()) << std::endl;
             this->exec_inst(Inst(INST_DUMP_STACK));
             std::cout << std::endl;
         }
