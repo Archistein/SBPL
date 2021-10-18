@@ -102,6 +102,9 @@ std::vector<Token> Tokenizer::tokenize() {
 
                 else if (word_buffer == "=")
                     result.push_back(Token(TOKEN_ASSIGN));
+                
+                else if (word_buffer == "goto")
+                    result.push_back(Token(TOKEN_GOTO));
 
                 else if (word_buffer == "if")
                     result.push_back(Token(TOKEN_IF));
@@ -138,8 +141,7 @@ std::vector<Token> Tokenizer::tokenize() {
                         result.push_back(Token(TOKEN_IDENT, word_buffer.substr(0, word_buffer.length()-1)));
                         result.push_back(Token(TOKEN_GET_VAR));
                     } else if (word_buffer[word_buffer.length() - 1] == ':') {
-                        result.push_back(Token(TOKEN_IDENT, word_buffer.substr(0, word_buffer.length()-1)));
-                        result.push_back(Token(TOKEN_SET_LABEL));
+                        result.push_back(Token(TOKEN_SET_LABEL, word_buffer.substr(0, word_buffer.length()-1)));
                     } else 
                         result.push_back(Token(TOKEN_IDENT, word_buffer));
                 }
