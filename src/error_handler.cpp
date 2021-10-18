@@ -32,6 +32,9 @@ EHandler::EHandler(EXIT_CODE code, Inst instruction) {
         case LABEL_EXISTS:
             std::cerr << "ERROR: Label " << instruction.get_operand().get_val() << " already exists" << std::endl;
             break;
+        case LABEL_DOESNT_EXISTS:
+            std::cerr << "ERROR: Label " << instruction.get_operand().get_val() << " doesn't exists" << std::endl;
+            break;
         case SEGMENTATION_FAULT:
             std::cerr << "ERROR: Segmentation fault" << std::endl;
             break;

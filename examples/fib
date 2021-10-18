@@ -3,11 +3,15 @@
 a int 0 =
 b int 1 =
 
-"Fibonacci nums:\n" puts
+"Fibonacci nums:" puts
 
 i int 0 =
 while i$ NUM < {
     b$ a$ b$ + =
-    a$ puts b$ a$ - = 
+    a$ print b$ a$ - = 
     i$ ++
+
+    " " print pop
 }
+
+"" puts pop
