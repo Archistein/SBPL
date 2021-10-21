@@ -4,11 +4,11 @@
 #include <string>
 
 enum VAR_TYPE {
-    VAR_UNDEFINED,
     VAR_INT,
     VAR_DOUBLE,
     VAR_CHAR,
-    VAR_STRING
+    VAR_STRING,
+    VAR_UNDEFINED
 };
 
 class Data {

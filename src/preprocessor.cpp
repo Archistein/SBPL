@@ -21,8 +21,10 @@ std::string Preproc::preprocess() {
 
     std::ifstream file(input_file);
 
-    if (!file.good())
-        return "";
+    if (!file.good()) {
+        std::cerr << "ERROR: No such file" << std::endl;
+        exit(-7);
+    }
 
     std::string const_name;
     std::string const_value;

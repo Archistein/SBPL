@@ -35,9 +35,9 @@ enum INST_TYPE {
     INST_DECR,
     INST_SET_TYPE,
     INST_GET_VAR,
-    INST_EXIT,
     INST_DUMP_STACK,
-    INST_DUMP_DATA_AREA
+    INST_DUMP_DATA_AREA,
+    INST_EXIT,
 };
 
 class Inst {

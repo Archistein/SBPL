@@ -1,1 +1,1 @@
-(In the future) Stack-based programming language
+SBPL - Stack-based programming language (UNSTABLE VERSION)

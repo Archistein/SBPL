@@ -1,4 +1,4 @@
-all: main helper preproc lexer parser data vm error_handler build
+all: main helper preproc lexer parser compiler data vm error_handler build
 
 main: src/main.cpp
 	g++ -c src/main.cpp -o obj/main.o
@@ -14,6 +14,9 @@ lexer: src/lexer.cpp
 
 parser: src/parser.cpp
 	g++ -c src/parser.cpp -o obj/parser.o
+
+compiler: src/compiler.cpp
+	g++ -c src/compiler.cpp -o obj/compiler.o
 
 data: src/data.cpp
 	g++ -c src/data.cpp -o obj/data.o
