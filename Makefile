@@ -25,7 +25,7 @@ error_handler: src/error_handler.cpp
 	g++ -c src/error_handler.cpp -o obj/error_handler.o
 
 build: obj/*.o
-	g++ obj/*.o -o build/vm.out
+	g++ obj/*.o -o build/sbpl.out
 
 run:
-	./build/vm.out
+	./build/sbpl.out
