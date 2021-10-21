@@ -3,6 +3,7 @@
 #include "inc/preprocessor.h"
 #include "inc/lexer.h"
 #include "inc/parser.h"
+#include "inc/compiler.h"
 #include "inc/vm.h"
 #include "inc/data.h"
 
@@ -16,161 +17,33 @@ void usage(char **argv) {
 }
 
 int main(int argc, char **argv) {
-    std::vector<Inst> program = {   
-                                    {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                    {INST_SET_TYPE, Data("", VAR_UNDEFINED, "int")},
-                                    {INST_PUSH, Data("", VAR_INT, "8")},
-                                    {INST_ASSIGN},
 
-                                    {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                    {INST_SET_TYPE, Data("", VAR_UNDEFINED, "int")},
-                                    {INST_PUSH, Data("", VAR_INT, "15")},
-                                    {INST_ASSIGN},
-
-                                    {INST_IF, Data("", VAR_UNDEFINED, "IF-1")},
-
-                                    {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-
-                                    {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-
-                                    {INST_LS},
-
-                                    {INST_BEGIN, Data("", VAR_UNDEFINED, "IFBEG-1")},
-
-                                    {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-
-                                    {INST_INCR},
-
-                                    {INST_END, Data("", VAR_UNDEFINED, "IFEND-1")},
-                                    
-                                    {INST_ELSE, Data("", VAR_UNDEFINED, "ELSE-1")},
-
-                                    {INST_BEGIN, Data("", VAR_UNDEFINED, "ELSEBEG-1")},
-
-                                    {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-
-                                    {INST_INCR},
-
-                                    {INST_END, Data("", VAR_UNDEFINED, "ELSEEND-1")},
-
-                                    {INST_PUSH, Data("", VAR_STRING, "Hello, World!\n")},
-                                    {INST_PUTS},
-
-                                    {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-                                    {INST_PUTS},
-
-                                    {INST_PUSH, Data("", VAR_STRING, "\n")},
-                                    {INST_PUTS},
-
-                                    {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                    {INST_GET_VAR},
-                                    {INST_PUTS},
-                                    {INST_EXIT}
-                                };
-
-    std::vector<Inst> fib = {
-                                {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                {INST_SET_TYPE, Data("", VAR_UNDEFINED, "int")},
-                                {INST_PUSH, Data("", VAR_INT, "0")},
-                                {INST_ASSIGN},
-
-                                {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                {INST_SET_TYPE, Data("", VAR_UNDEFINED, "int")},
-                                {INST_PUSH, Data("", VAR_INT, "1")},
-                                {INST_ASSIGN},
-                                
-                                {INST_PUSH, Data("i", VAR_UNDEFINED, "")},
-                                {INST_SET_TYPE, Data("", VAR_UNDEFINED, "int")},
-                                {INST_PUSH, Data("", VAR_INT, "0")},
-                                {INST_ASSIGN},
-
-                                {INST_PUSH, Data("", VAR_STRING, "Fibonacci nums:\n")},
-                                {INST_PRINT},
-
-                                {INST_WHILE, Data("", VAR_UNDEFINED, "WHILE-1")},
-
-                                {INST_PUSH, Data("i", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_PUSH, Data("", VAR_INT, "15")},
-
-                                {INST_LS},
-
-                                {INST_BEGIN, Data("", VAR_UNDEFINED, "WHILEBEG-1")},
-
-                                {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-                                
-                                {INST_PLUS},
-
-                                {INST_ASSIGN},
-
-                                {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_PRINT},
-
-                                {INST_PUSH, Data("b", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_PUSH, Data("a", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_MINUS},
-
-                                {INST_ASSIGN},
-
-                                {INST_PUSH, Data("i", VAR_UNDEFINED, "")},
-                                {INST_GET_VAR},
-
-                                {INST_INCR},
-
-                                {INST_PUSH, Data("", VAR_UNDEFINED, " ")},
-                                {INST_PRINT},
-
-                                {INST_END, Data("", VAR_UNDEFINED, "WHILEEND-1")},
-                                
-                                {INST_PUSH, Data("", VAR_UNDEFINED, "\n")},
-                                {INST_PRINT},
-
-                                {INST_EXIT}
-                            };
-    
-    if (argc < 3) {
-        std::cerr << "ERROR: Too few arguments" << std::endl;
-        usage(argv);
-        exit(-1);
-    }
-    
     if (argv[1][0] == '-') {
         if (argv[1][1] == 'c') {
             
+            if (argc < 4) {
+                std::cerr << "ERROR: Too few arguments" << std::endl;
+                usage(argv);
+                exit(-1);
+            } 
+
             Preproc preprocessor(argv[2]);
 
             std::string source_code = preprocessor.preprocess();
-
+    
             Tokenizer tokenizer(source_code);
             
             Parser parser(tokenizer.tokenize());
 
-            VM Virtual_Machine(parser.parse());
-            Virtual_Machine.eval();
+            Compiler compiler(parser.parse(), argv[3]);
+            compiler.compile();
 
         } else if (argv[1][1] == 'v') {
 
-            std::cerr << "Execution not implemented" << std::endl;
-            exit(NOT_IMPLEMENTED);
+            Compiler compiler(argv[2]);
+
+            VM Virtual_Machine(compiler.decompile());
+            Virtual_Machine.eval();
 
         } else if (argv[1][1] == 'E') {
 
@@ -196,7 +69,5 @@ int main(int argc, char **argv) {
 
     }
 
-    //VM Virtual_Machine(fib);
-    //Virtual_Machine.eval();
     return 0;
 }
