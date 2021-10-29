@@ -18,6 +18,12 @@ void usage(char **argv) {
 
 int main(int argc, char **argv) {
 
+    if (argc < 3) {
+        std::cerr << "ERROR: Too few arguments" << std::endl;
+        usage(argv);
+        exit(-1);
+    } 
+
     if (argv[1][0] == '-') {
         if (argv[1][1] == 'c') {
             
@@ -66,6 +72,12 @@ int main(int argc, char **argv) {
             exit(-2);
 
         }
+
+    } else {
+
+        std::cerr << "ERROR: Subcommand was expected" << std::endl;
+        usage(argv);
+        exit(3);
 
     }
 
