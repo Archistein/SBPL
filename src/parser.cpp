@@ -187,6 +187,10 @@ std::vector<Inst> Parser::parse() {
                 result.push_back(Inst(INST_PUTS));
                 break;
 
+            case TOKEN_STDIN:
+                result.push_back(Inst(INST_STDIN));
+                break;
+
             case TOKEN_INCR:
                 result.push_back(Inst(INST_INCR));
                 break;

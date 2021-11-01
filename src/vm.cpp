@@ -26,67 +26,69 @@ Data Inst::get_operand() {
 std::string Inst::inst_type_as_str(INST_TYPE instruction) {
     switch(instruction) {
         case INST_PUSH:
-            return "INST_PUSH";
+            return "PUSH";
         case INST_POP:
-            return "INST_POP";
+            return "POP";
         case INST_DUP:
-            return "INST_DUP";
+            return "DUP";
         case INST_PLUS:
-            return "INST_PLUS";
+            return "PLUS";
         case INST_MINUS:
-            return "INST_MINUS";
+            return "MINUS";
         case INST_MUL:
-            return "INST_MUL";
+            return "MUL";
         case INST_DIV:
-            return "INST_DIV";
+            return "DIV";
         case INST_EQ:
-            return "INST_EQ";
+            return "EQ";
         case INST_GT:
-            return "INST_GT";
+            return "GT";
         case INST_LS:
-            return "INST_LS";
+            return "LS";
         case INST_LE:
-            return "INST_LE";
+            return "LE";
         case INST_GE:
-            return "INST_GE";
+            return "GE";
         case INST_ASSIGN:
-            return "INST_ASSIGN";
+            return "ASSIGN";
         case INST_JMP:
-            return "INST_JMP";
+            return "JMP";
         case INST_JME:
-            return "INST_JME";
+            return "JME";
         case INST_GOTO:
-            return "INST_GOTO";
+            return "GOTO";
         case INST_IF:
-            return "INST_IF";
+            return "IF";
         case INST_ELSE:
-            return "INST_ELSE";
+            return "ELSE";
         case INST_WHILE:
-            return "INST_WHILE";
+            return "WHILE";
         case INST_BEGIN:
-            return "INST_BEGIN";
+            return "BEGIN";
         case INST_END:
-            return "INST_END";
+            return "END";
         case INST_PRINT:
-            return "INST_PRINT";
+            return "PRINT";
         case INST_PUTS:
-            return "INST_PUTS";
+            return "PUTS";
+        case INST_STDIN:
+            return "STDIN";
         case INST_INCR:
-            return "INST_INCR";
+            return "INCR";
         case INST_DECR:
-            return "INST_DECR";
+            return "DECR";
         case INST_SET_TYPE:
-            return "INST_SET_TYPE";
+            return "SET_TYPE";
         case INST_GET_VAR:
-            return "INST_GET_VAR";
+            return "GET_VAR";
         case INST_EXIT:
-            return "INST_EXIT";
+            return "EXIT";
         case INST_DUMP_STACK:
-            return "INST_DUMP_STACK";
+            return "DUMP_STACK";
         case INST_DUMP_DATA_AREA:
-            return "INST_DUMP_DATA_AREA";
+            return "DUMP_DATA_AREA";
         default:
-            return "UNRECOGNIZED_INST";
+            return "UNRECOGNIZED";
     }
 }
 
@@ -543,6 +545,16 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             std::cout << this->Stack[this->Stack.size()-1].get_val();
             
             return OK;
+
+        case INST_STDIN:
+        {
+            std::string operand;
+            std::cin >> operand;
+            
+            this->Stack.push_back(Data("", VAR_STRING, operand));
+
+            return OK;
+        }
 
         case INST_PUTS:
             if (this->Stack.size() < 1)

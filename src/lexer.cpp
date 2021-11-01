@@ -127,6 +127,9 @@ std::vector<Token> Tokenizer::tokenize() {
                 else if (word_buffer == "puts")
                     result.push_back(Token(TOKEN_PUTS));
 
+                else if (word_buffer == "stdin")
+                    result.push_back(Token(TOKEN_STDIN));
+
                 else if (word_buffer == "++")
                     result.push_back(Token(TOKEN_INCR));
 
