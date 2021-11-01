@@ -2,6 +2,7 @@
 #include <map>
 #include "inc/vm.h"
 #include "inc/data.h"
+#include "inc/helper.h"
 
 #define DEBUG false
 
@@ -608,6 +609,17 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             this->exec_inst(Inst(INST_MINUS));
             this->exec_inst(Inst(INST_ASSIGN));
             
+            return OK;
+
+        case INST_TO_INT:
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+            
+            if (!helper::is_int(this->Stack[this->Stack.size()-1].get_val()))
+               return TYPE_MISMATCH;
+
+            this->Stack[this->Stack.size()-1].set_type(VAR_INT);
+
             return OK;
 
         case INST_SET_TYPE:
