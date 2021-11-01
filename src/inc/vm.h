@@ -31,6 +31,7 @@ enum INST_TYPE {
     INST_END,
     INST_PRINT,
     INST_PUTS,
+    INST_ENDL,
     INST_STDIN,
     INST_INCR,
     INST_DECR,

@@ -546,6 +546,20 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
             
             return OK;
 
+        case INST_PUTS:
+            if (this->Stack.size() < 1)
+                return STACK_UNDERFLOW;
+
+            std::cout << this->Stack[this->Stack.size()-1].get_val() << std::endl;
+            
+            return OK;
+
+        case INST_ENDL:
+            
+            std::cout << std::endl;
+
+            return OK;
+
         case INST_STDIN:
         {
             std::string operand;
@@ -555,14 +569,6 @@ EXIT_CODE VM::exec_inst(Inst instruction) {
 
             return OK;
         }
-
-        case INST_PUTS:
-            if (this->Stack.size() < 1)
-                return STACK_UNDERFLOW;
-
-            std::cout << this->Stack[this->Stack.size()-1].get_val() << std::endl;
-            
-            return OK;
 
         case INST_INCR:
             if (this->Stack.size() < 1)
