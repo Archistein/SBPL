@@ -1,0 +1,23 @@
+"Simple calculator" puts
+
+while 1 {
+    "Enter 1 num " print pop left_operand int stdin to_int =
+    
+    "Enter op " print pop    op string stdin =
+
+    "Enter 2 num " print pop right_operand int stdin to_int =
+    
+    "Result " print pop
+
+    if op$ "+" == {
+        left_operand$ right_operand$ + puts
+    } else { if op$ "-" == {
+        left_operand$ right_operand$ - puts
+    } else { if op$ "*" == {
+        left_operand$ right_operand$ * puts
+    } else { if op$ "/" == {
+        left_operand$ right_operand$ / puts
+    } } } }
+
+    endl
+}
