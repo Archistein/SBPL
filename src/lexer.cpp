@@ -142,6 +142,9 @@ std::vector<Token> Tokenizer::tokenize() {
                 else if (word_buffer == "exit")
                     result.push_back(Token(TOKEN_EXIT));
 
+                else if (word_buffer == "to_int")
+                    result.push_back(Token(TOKEN_TO_INT));
+
                 else {
                     if (word_buffer[word_buffer.length() - 1] == '$') {
                         result.push_back(Token(TOKEN_IDENT, word_buffer.substr(0, word_buffer.length()-1)));

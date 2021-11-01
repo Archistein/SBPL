@@ -39,6 +39,7 @@ enum TOKEN_TYPE {
     TOKEN_STDIN,
     TOKEN_INCR,
     TOKEN_DECR,
+    TOKEN_TO_INT,
     TOKEN_GET_VAR,
     TOKEN_EXIT
 };

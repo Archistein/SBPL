@@ -203,6 +203,10 @@ std::vector<Inst> Parser::parse() {
                 result.push_back(Inst(INST_DECR));
                 break;
 
+            case TOKEN_TO_INT:
+                result.push_back(Inst(INST_TO_INT));
+                break;
+
             case TOKEN_GET_VAR:
                 result.push_back(Inst(INST_GET_VAR));
                 break;
